@@ -4,10 +4,10 @@
 
 ## Como...
 
-- Script do banco
+- Script do banco.
 
 ## Funcionalidades
 
-- O sistema deve persistir e recuiperar informações do BD.
+- O sistema deve persistir e recuperar informações do BD.
 
-## Curso de Java da UTD-Ce
+## Curso de Java ofertado pela UTD-Ce.
