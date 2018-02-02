@@ -12,7 +12,11 @@ public class Principal extends JFrame {
 
 	private JMenuBar mbBarra;
 	private JMenu jmArquivo, jmEditar, jmAjuda;
-	private JMenuItem miCadastra, miSair, miLimpar, miInformacao;
+	protected JMenuItem miCadastra;
+	protected JMenuItem miConsultar;
+	private JMenuItem miSair;
+	private JMenuItem miLimpar;
+	private JMenuItem miInformacao;
 
 	public Principal() {
 		// Definições da tela
@@ -32,11 +36,13 @@ public class Principal extends JFrame {
 		jmAjuda = new JMenu("Ajuda");
 
 		miCadastra = new JMenuItem("Cadastra");
+		miConsultar = new JMenuItem("Consultar");
 		miSair = new JMenuItem("Sair");
 		miLimpar = new JMenuItem("Limpar");
 		miInformacao = new JMenuItem("Informações");
 
 		jmArquivo.add(miCadastra);
+		jmArquivo.add(miConsultar);
 		jmArquivo.add(miSair);
 		jmEditar.add(miLimpar);
 		jmAjuda.add(miInformacao);
@@ -63,7 +69,7 @@ public class Principal extends JFrame {
 
 	public static void main(String[] args) {
 
-		new Principal().setVisible(true);
+		new Cadastro().setVisible(true);
 
 	}
 

@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-public class Cadastro extends JFrame{
+public class Cadastro extends Principal{
 	
 	private JLabel lbApresentação, lbCodigo, lbNome, lbEmail, lbCidade, lbBairro, lbCurso, lbFoto, lbLogica;
 	private JTextField tfCodigo, tfNome, tfEmail, tfBairro;
@@ -43,7 +43,7 @@ public class Cadastro extends JFrame{
 		// Define um titulo para o Frame
 		setTitle("Cadastro de Alunos");
 		// Define o tamanho do frame
-		setSize(640, 480);
+		setSize(540, 430);
 		//
 		getContentPane().setBackground(new Color(135, 206, 250));
 		// Define a Localização
@@ -85,31 +85,31 @@ public class Cadastro extends JFrame{
 		getContentPane().setLayout(null);
 
 		// Coordenadas das posições dos componentes, Label TextFild e Button
-		lbApresentação.setBounds(100, 110, 400, 20);
-		lbCodigo.setBounds(20, 145, 50, 20);
-		lbNome.setBounds(20, 175, 50, 20);
-		lbEmail.setBounds(20, 210, 50, 20);
-		lbCidade.setBounds(20, 245, 50, 20);
-		lbBairro.setBounds(20, 280, 50, 20);
-		lbCurso.setBounds(20, 315, 50, 20);
-		lbFoto.setBounds(400, 350, 50, 20);
-		lbLogica.setBounds(20, 350, 250, 20);
+		lbApresentação.setBounds(100, 10, 400, 20);
+		lbCodigo.setBounds(20, 45, 50, 20);
+		lbNome.setBounds(20, 75, 50, 20);
+		lbEmail.setBounds(20, 110, 50, 20);
+		lbCidade.setBounds(20, 145, 50, 20);
+		lbBairro.setBounds(20, 180, 50, 20);
+		lbCurso.setBounds(20, 215, 50, 20);
+		lbFoto.setBounds(400, 250, 50, 20);
+		lbLogica.setBounds(20, 250, 250, 20);
 
-		tfCodigo.setBounds(100, 145, 50, 25);
-		tfNome.setBounds(100, 175, 200, 25);
-		tfEmail.setBounds(100, 210, 200, 25);
+		tfCodigo.setBounds(100, 45, 50, 25);
+		tfNome.setBounds(100, 75, 200, 25);
+		tfEmail.setBounds(100, 110, 200, 25);
 
-		tfBairro.setBounds(100, 280, 200, 25);
+		tfBairro.setBounds(100, 180, 200, 25);
 
-		btnConcluir.setBounds(90, 410, 100, 30);
-		btnConsultar.setBounds(220, 410, 110, 30);
-		btnLimpar.setBounds(360, 410, 100, 30);
+		btnConcluir.setBounds(90, 310, 100, 30);
+		btnConsultar.setBounds(220, 310, 110, 30);
+		btnLimpar.setBounds(360, 310, 100, 30);
 
-		cbCidade.setBounds(100, 245, 200, 20);
-		cbCurso.setBounds(100, 315, 200, 20);
+		cbCidade.setBounds(100, 145, 200, 20);
+		cbCurso.setBounds(100, 215, 200, 20);
 
-		rbSim.setBounds(40, 375, 60, 20);
-		rbNao.setBounds(120, 375, 60, 20);
+		rbSim.setBounds(40, 275, 60, 20);
+		rbNao.setBounds(120, 275, 60, 20);
 
 		// rbSim.setBounds(x, y, width, height);
 
@@ -141,6 +141,9 @@ public class Cadastro extends JFrame{
 
 		bgLogica.add(rbSim);
 		bgLogica.add(rbNao);
+		
+		miCadastra.setEnabled(false);
+		
 
 	}
 
