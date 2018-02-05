@@ -20,7 +20,7 @@ public class Principal extends JFrame {
 
 	public Principal() {
 		// Definições da tela
-		setTitle("Cadastro de Aluno");
+		setTitle("Menu");
 		setSize(740, 580);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -63,13 +63,21 @@ public class Principal extends JFrame {
 
 			}
 		});
+		
+		miConsultar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				new Consulta().setVisible(true);
+				
+			}
+		});
 	}
-
-	// getContentPane().add(menuBarra);
 
 	public static void main(String[] args) {
 
-		new Cadastro().setVisible(true);
+		new Principal().setVisible(true);
 
 	}
 

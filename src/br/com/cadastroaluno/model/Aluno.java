@@ -3,23 +3,28 @@ package br.com.cadastroaluno.model;
 public class Aluno {
 
 	private int id;
-	private int matricula;
 	private String nome;
 	private String email;
-	private Endereco endereco;
-	private Curso curso;
+	private String rua;
+	private String bairro;
+	private String cidade;
+	private String curso;
+	private boolean logica;
 
 	public Aluno() {
 
 	}
 
-	public Aluno(int id, int matricula, String nome, String email, Endereco endereco, Curso curso) {
+	public Aluno(int id, String nome, String email, String rua, String bairro, String cidade, String curso, boolean logica) {
+		super();
 		this.id = id;
-		this.matricula = matricula;
 		this.nome = nome;
 		this.email = email;
-		this.endereco = endereco;
+		this.rua = rua;
+		this.bairro = bairro;
+		this.cidade = cidade;
 		this.curso = curso;
+		this.logica = logica;
 	}
 
 	public int getId() {
@@ -28,14 +33,6 @@ public class Aluno {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(int matricula) {
-		this.matricula = matricula;
 	}
 
 	public String getNome() {
@@ -54,20 +51,44 @@ public class Aluno {
 		this.email = email;
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
+	public String getBairro() {
+		return bairro;
 	}
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setbairro(String bairro) {
+		this.bairro = bairro;
+	}
+	
+	public String getRua() {
+		return rua;
 	}
 
-	public Curso getCurso() {
+	public void setRua(String rua) {
+		this.rua = rua;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Object object) {
+		this.cidade = (String) object;
+	}
+
+	public String getCurso() {
 		return curso;
 	}
 
-	public void setCurso(Curso curso) {
-		this.curso = curso;
+	public void setCurso(Object object) {
+		this.curso = (String) object;
+	}
+
+	public boolean isLogica() {
+		return logica;
+	}
+
+	public void setLogica(boolean logica) {
+		this.logica = logica;
 	}
 
 }
