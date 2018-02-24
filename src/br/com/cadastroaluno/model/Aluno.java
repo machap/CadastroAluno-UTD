@@ -90,5 +90,11 @@ public class Aluno {
 	public void setLogica(boolean logica) {
 		this.logica = logica;
 	}
+	
+	@Override
+	public String toString() {
+		return "[Nome: " + this.nome + ", " + this.email + " ]";
+		
+	}
 
 }

@@ -1,19 +1,26 @@
 package br.com.cadastroaluno.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
+import br.com.cadastroaluno.connection.ConnectionFactory;
 import br.com.cadastroaluno.dao.AlunoDAO;
 import br.com.cadastroaluno.model.Aluno;
 
@@ -25,6 +32,7 @@ public class Consulta extends Principal {
 
 	private JTable tbConsultaAluno;
 
+	@SuppressWarnings("unused")
 	public Consulta() {
 
 		setTitle("Consulta de Alunos");
@@ -37,19 +45,66 @@ public class Consulta extends Principal {
 		lbPesquisar.setBounds(20, 30, 80, 25);
 		getContentPane().add(lbPesquisar);
 
-		tfPesquisar = new JTextField("Pesuise pelo Nome");
+		tfPesquisar = new JTextField();
 		tfPesquisar.setBounds(110, 30, 150, 25);
 		getContentPane().add(tfPesquisar);
 
 		btnPesquisar = new JButton("Pesquisar");
 		btnPesquisar.setBounds(280, 30, 110, 25);
 		getContentPane().add(btnPesquisar);
-		
+
 		btnConsultar = new JButton("Consultar");
 		btnConsultar.setBounds(400, 30, 110, 25);
 		getContentPane().add(btnConsultar);
-		
+
 		miConsultar.setEnabled(false);
+
+		btnPesquisar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				int id = 0;
+
+				
+				try {
+					if (tfPesquisar.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "O Campo Pesquisa não pode está vazio!");
+						tfPesquisar.requestFocus();
+					} else {
+						id = Integer.parseInt(tfPesquisar.getText());
+					}
+
+				} catch (NumberFormatException numberFormatException) {
+					JOptionPane.showMessageDialog(null, "O Campo Pesquisa só aceita numeros");
+				}
+				
+				Cadastro c = new Cadastro();
+				
+				Aluno aluno = new Aluno();
+				AlunoDAO  dao = new AlunoDAO();;
+				
+				aluno = dao.retornaDados(id);
+
+				c.tfNome.setText(aluno.getNome());
+				c.tfEmail.setText(aluno.getEmail());
+				c.tfRua.setText(aluno.getRua());
+				c.tfBairro.setText(aluno.getBairro());
+				c.cbCidade.setSelectedItem(aluno.getCidade());
+				c.cbCurso.setSelectedItem(aluno.getCurso());
+				if(aluno.isLogica() == true){
+					c.rbSim.setSelected(true);
+				}else{
+					c.rbNao.setSelected(true);
+				}
+
+				c.setVisible(true);				
+
+				c.btnEditar.setEnabled(true);
+
+			}
+
+		});
 
 		tbConsultaAluno = new JTable();
 		JScrollPane scrollPane = new JScrollPane();
@@ -58,16 +113,19 @@ public class Consulta extends Principal {
 
 		tbConsultaAluno.setModel(new DefaultTableModel(
 
-				new Object[][] { { null, null, null, null, null, null, null, null } },
-				new String[] { "ID", "NOME", "EMAIL", "RUA", "BAIRRO", "CIDADE", "CURSO", "LOGICA" }
+				new Object[][] { { "ID", "NOME", "EMAIL", "RUA", "BAIRRO", "CIDADE", "CURSO", "LOGICA" } },
+
+				new String[] { null, null, null, null, null, null, null, null, null }
 
 		));
 
-		tbConsultaAluno.setPreferredScrollableViewportSize(new Dimension(500, 400));
-		tbConsultaAluno.setFillsViewportHeight(true);
-
-		tbConsultaAluno.setBounds(20, 75, 490, 200);
+		tbConsultaAluno.setBounds(20, 75, 490, 280);
 		getContentPane().add(tbConsultaAluno);
+
+		tbConsultaAluno.addMouseListener(new MouseAdapter() {
+
+		});
+
 
 		btnConsultar.addActionListener(new ActionListener() {
 
@@ -84,15 +142,17 @@ public class Consulta extends Principal {
 
 			public void readJTable() {
 				DefaultTableModel t = (DefaultTableModel) tbConsultaAluno.getModel();
-				t.setNumRows(0);
+				t.setNumRows(1);
+
 				AlunoDAO dao = new AlunoDAO();
 
-				for (Aluno a : dao.findId()) {
+				for (Aluno a : dao.buscarTodos()) {
 
 					t.addRow(new Object[] { a.getId(), a.getNome(), a.getEmail(), a.getRua(), a.getBairro(),
 							a.getCidade(), a.getCurso(), a.isLogica()
 
 					});
+
 				}
 			}
 

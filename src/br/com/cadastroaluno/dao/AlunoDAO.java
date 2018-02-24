@@ -22,7 +22,7 @@ public class AlunoDAO {
 		con = ConnectionFactory.getConnection();
 	}
 
-	public boolean insert(Aluno aluno) {
+	public boolean inserir(Aluno aluno) {
 
 		String sql = "INSERT INTO tbAlunoDados(nome, email, rua, bairro, cidade, curso, logica) VALUES (?,?,?,?,?,?,?)";
 
@@ -54,45 +54,7 @@ public class AlunoDAO {
 		}
 	}
 
-	public List<Aluno> findAll(int id) {
-
-		String sql = "SELECT * FROM tbAlunoDados WHERE id = ?";
-
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		List<Aluno> alunos = new ArrayList<>();
-
-		try {
-
-			Aluno aluno = new Aluno();
-			stmt = con.prepareStatement(sql);
-			stmt.setInt(1, id);
-			rs = stmt.executeQuery();
-
-			rs.next();
-			aluno.setNome(rs.getString("id"));
-			aluno.setNome(rs.getString("nome"));
-			aluno.setEmail(rs.getString("email"));
-			aluno.setRua(rs.getString("rua"));
-			aluno.setbairro(rs.getString("bairro"));
-			aluno.setCidade(rs.getObject("cidade"));
-			aluno.setCurso(rs.getObject("curso"));
-			aluno.setLogica(rs.getBoolean("logica"));
-
-			alunos.add(aluno);
-
-		} catch (SQLException ex) {
-			System.err.println("Erro: " + ex);
-		} finally {
-			ConnectionFactory.closeConnection(con, stmt, rs);
-		}
-
-		return alunos;
-
-	}
-
-	public List<Aluno> findId() {
+	public List<Aluno> buscarTodos() {
 
 		String sql = "SELECT * FROM tbAlunoDados";
 
@@ -107,28 +69,66 @@ public class AlunoDAO {
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
-
 				Aluno aluno = new Aluno();
 
-				aluno.setId(rs.getInt("id"));
 				aluno.setNome(rs.getString("nome"));
 				aluno.setEmail(rs.getString("email"));
 				aluno.setRua(rs.getString("rua"));
-				aluno.setbairro(rs.getString("bairro"));
-				aluno.setCidade(rs.getObject("cidade"));
-				aluno.setCurso(rs.getObject("curso"));
+				aluno.setbairro(rs.getString("rua"));
+				aluno.setCidade(rs.getString("cidade"));
+				aluno.setCurso(rs.getString("curso"));
 				aluno.setLogica(rs.getBoolean("logica"));
 
 				alunos.add(aluno);
 			}
+
 		} catch (SQLException ex) {
+
 			System.err.println("Erro: " + ex);
+
 		} finally {
+
 			ConnectionFactory.closeConnection(con, stmt, rs);
 		}
 
 		return alunos;
+	}
 
+	public Aluno retornaDados(int id) {
+
+		String sql = "SELECT * FROM tbAlunoDados WHERE id = ?";
+
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		Aluno aluno = new Aluno();
+
+		try {
+
+			stmt = con.prepareStatement(sql);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+
+			rs.next();
+
+			aluno.setNome(rs.getString("nome"));
+			aluno.setEmail(rs.getNString("email"));
+			aluno.setRua(rs.getNString("rua"));
+			aluno.setbairro(rs.getNString("bairro"));
+			aluno.setCidade(rs.getObject("cidade"));
+			aluno.setCurso(rs.getObject("curso"));
+			aluno.setLogica(rs.getBoolean("logica"));
+
+		} catch (SQLException ex) {
+
+			System.err.println("Erro: " + ex);
+
+		} finally {
+
+			ConnectionFactory.closeConnection(con, stmt, rs);
+		}
+
+		return aluno;
 	}
 
 }

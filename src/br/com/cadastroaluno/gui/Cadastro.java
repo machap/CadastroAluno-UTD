@@ -9,21 +9,22 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import br.com.cadastroaluno.dao.AlunoDAO;
 import br.com.cadastroaluno.model.Aluno;
 
-
-
 public class Cadastro extends Principal {
 
 	private JLabel lbApresentação, lbRua, lbNome, lbEmail, lbCidade, lbBairro, lbCurso, lbFoto, lbLogica;
-	private JTextField tfRua, tfNome, tfEmail, tfBairro;
-	private JButton btnConcluir, btnConsultar, btnLimpar;
-	private JComboBox cbCidade, cbCurso;
-	private JRadioButton rbSim, rbNao;
+	protected JTextField tfRua, tfNome, tfEmail, tfBairro;
+	protected JButton btnConcluir, btnEditar, btnLimpar;
+	JComboBox cbCidade;
+	JComboBox cbCurso;
+	JRadioButton rbSim;
+	JRadioButton rbNao;
 	private ButtonGroup bgLogica;
 
 	public void limpar() {
@@ -37,7 +38,7 @@ public class Cadastro extends Principal {
 		bgLogica.clearSelection();
 	}
 
-	public void inicializarComponentes() {
+	public Cadastro() {
 
 		// Define um titulo para o Frame
 		setTitle("Cadastro de Alunos");
@@ -67,7 +68,7 @@ public class Cadastro extends Principal {
 		tfBairro = new JTextField();
 
 		btnConcluir = new JButton("Concluir");
-		btnConsultar = new JButton("Consultar");
+		btnEditar = new JButton("Editar");
 		btnLimpar = new JButton("Limpar");
 
 		rbSim = new JRadioButton("Sim");
@@ -104,7 +105,7 @@ public class Cadastro extends Principal {
 		cbCurso.setBounds(100, 215, 200, 20);
 
 		btnConcluir.setBounds(90, 310, 100, 30);
-		btnConsultar.setBounds(220, 310, 110, 30);
+		btnEditar.setBounds(220, 310, 110, 30);
 		btnLimpar.setBounds(360, 310, 100, 30);
 
 		rbSim.setBounds(40, 275, 60, 20);
@@ -127,7 +128,7 @@ public class Cadastro extends Principal {
 		getContentPane().add(tfBairro);
 
 		getContentPane().add(btnConcluir);
-		getContentPane().add(btnConsultar);
+		getContentPane().add(btnEditar);
 		getContentPane().add(btnLimpar);
 
 		getContentPane().add(cbCidade);
@@ -139,11 +140,14 @@ public class Cadastro extends Principal {
 		bgLogica.add(rbSim);
 		bgLogica.add(rbNao);
 
+		btnEditar.setEnabled(false);
 		miCadastra.setEnabled(false);
 
-	}
-
-	public void definirEventos() {
+		JPanel painelFoto = new JPanel();
+		painelFoto.setBounds(350, 95,120, 145);
+		this.getContentPane().add(painelFoto);
+		painelFoto.setBackground(Color.DARK_GRAY);
+		
 
 		// Evento para o botão limpar
 		btnLimpar.addActionListener(new ActionListener() {
@@ -161,12 +165,11 @@ public class Cadastro extends Principal {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				
-			    if (tfNome.getText().equals("")) {
+				if (tfNome.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "O Nome não pode está vazio!");
 
 					tfNome.requestFocus();
-			    }else if (tfRua.getText().equals("")) {
+				} else if (tfRua.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "O Código não pode está vazio!");
 					// Coloca o cursor na caixa de texto correspondente
 					tfRua.requestFocus();
@@ -185,8 +188,8 @@ public class Cadastro extends Principal {
 				} else {
 
 					Aluno aluno = new Aluno();
-					AlunoDAO  dao = new AlunoDAO();
-										
+					AlunoDAO dao = new AlunoDAO();
+
 					aluno.setNome(tfNome.getText());
 					aluno.setEmail(tfEmail.getText());
 					aluno.setRua(tfRua.getText());
@@ -198,56 +201,18 @@ public class Cadastro extends Principal {
 					} else {
 						aluno.setLogica(false);
 					}
-			
-					if(dao.insert(aluno)) {
+
+					if (dao.inserir(aluno)) {
 						JOptionPane.showMessageDialog(null, "Alunos Cadastrado com Sucesso");
-					}else {
+					} else {
 						JOptionPane.showMessageDialog(null, "Não foi possivel salvar");
 					}
 
 				}
 
-				
-			}
-		});
-
-		// Evento do botão Consultar
-		btnConsultar.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				int id = 0;
-				id = Integer.parseInt(JOptionPane.showInputDialog(null, "Infome o Código para Consulta:"));
-				
-				try {
-					
-					Aluno aluno = new Aluno();
-					AlunoDAO  dao = new AlunoDAO();
-					
-					dao.findAll(id);
-					
-					tfNome.setText(aluno.getNome());
-					tfEmail.setText(aluno.getEmail());
-					tfRua.setText(aluno.getRua());
-					tfBairro.setText(aluno.getBairro());
-					cbCidade.setSelectedItem(aluno.getCidade());
-					cbCurso.setSelectedItem(aluno.getCurso());
-									
-					
-				} catch (Exception erro) {
-					JOptionPane.showMessageDialog(null, "Não foi possivel realizar a tarefa." + erro);
-
-					limpar();
-				}
-
 			}
 		});
 
 	}
 
-	public Cadastro() {
-		inicializarComponentes();
-		definirEventos();
-	}
 }
