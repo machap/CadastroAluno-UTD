@@ -4,7 +4,7 @@
 
 ## Como...
 
-<a href="https://drive.google.com/open?id=1Vf3VbMr7_sInZRVSD5PmSq8TNAA5P2_L">- Script do banco.</a>
+- <a href="https://drive.google.com/open?id=1Vf3VbMr7_sInZRVSD5PmSq8TNAA5P2_L">Script do banco.</a>
 
 ## Funcionalidades
 
