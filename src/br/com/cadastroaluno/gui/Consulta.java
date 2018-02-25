@@ -5,11 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,7 +16,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import br.com.cadastroaluno.connection.ConnectionFactory;
 import br.com.cadastroaluno.dao.AlunoDAO;
 import br.com.cadastroaluno.model.Aluno;
 
@@ -45,9 +40,45 @@ public class Consulta extends Principal {
 		lbPesquisar.setBounds(20, 30, 80, 25);
 		getContentPane().add(lbPesquisar);
 
-		tfPesquisar = new JTextField();
+		tfPesquisar = new JTextField("Pesquise pelo ID");
 		tfPesquisar.setBounds(110, 30, 150, 25);
 		getContentPane().add(tfPesquisar);
+
+		miLimpar.setEnabled(false);
+
+		tfPesquisar.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				tfPesquisar.setText("");
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
 
 		btnPesquisar = new JButton("Pesquisar");
 		btnPesquisar.setBounds(280, 30, 110, 25);
@@ -59,6 +90,9 @@ public class Consulta extends Principal {
 
 		miConsultar.setEnabled(false);
 
+		btnConsulta.setVisible(false);
+		btnAdiciona.setVisible(false);
+
 		btnPesquisar.addActionListener(new ActionListener() {
 
 			@Override
@@ -66,41 +100,64 @@ public class Consulta extends Principal {
 
 				int id = 0;
 
-				
+				Aluno aluno = new Aluno();
+
 				try {
 					if (tfPesquisar.getText().equals("")) {
 						JOptionPane.showMessageDialog(null, "O Campo Pesquisa não pode está vazio!");
 						tfPesquisar.requestFocus();
+
 					} else {
+
 						id = Integer.parseInt(tfPesquisar.getText());
+
+						Cadastro c = new Cadastro();
+
+						AlunoDAO dao = new AlunoDAO();
+
+						aluno = dao.retornaDados(id);
+
+						if (aluno.getId() != 0) {
+
+							c.tfNome.setText(aluno.getNome());
+							c.tfEmail.setText(aluno.getEmail());
+							c.tfRua.setText(aluno.getRua());
+							c.tfBairro.setText(aluno.getBairro());
+							c.cbCidade.setSelectedItem(aluno.getCidade());
+							c.cbCurso.setSelectedItem(aluno.getCurso());
+							if (aluno.isLogica() == true) {
+								c.rbSim.setSelected(true);
+							} else {
+								c.rbNao.setSelected(true);
+							}
+
+							c.aluno = aluno;
+							c.setVisible(true);
+
+							c.tfNome.setEnabled(false);
+							c.tfEmail.setEnabled(false);
+							c.tfRua.setEnabled(false);
+							c.tfBairro.setEnabled(false);
+							c.cbCidade.setEnabled(false);
+							c.cbCurso.setEnabled(false);
+							c.rbSim.setEnabled(false);
+							c.rbNao.setEnabled(false);
+
+							c.btnConcluir.setEnabled(false);
+							c.btnEditar.setEnabled(true);
+							c.btnLimpar.setEnabled(false);
+
+							c.miEditar.setEnabled(true);
+							c.miLimpar.setEnabled(false);
+						} else {
+							JOptionPane.showMessageDialog(null, "Aluno não encontrado");
+						}
 					}
 
 				} catch (NumberFormatException numberFormatException) {
 					JOptionPane.showMessageDialog(null, "O Campo Pesquisa só aceita numeros");
+					return;
 				}
-				
-				Cadastro c = new Cadastro();
-				
-				Aluno aluno = new Aluno();
-				AlunoDAO  dao = new AlunoDAO();;
-				
-				aluno = dao.retornaDados(id);
-
-				c.tfNome.setText(aluno.getNome());
-				c.tfEmail.setText(aluno.getEmail());
-				c.tfRua.setText(aluno.getRua());
-				c.tfBairro.setText(aluno.getBairro());
-				c.cbCidade.setSelectedItem(aluno.getCidade());
-				c.cbCurso.setSelectedItem(aluno.getCurso());
-				if(aluno.isLogica() == true){
-					c.rbSim.setSelected(true);
-				}else{
-					c.rbNao.setSelected(true);
-				}
-
-				c.setVisible(true);				
-
-				c.btnEditar.setEnabled(true);
 
 			}
 
@@ -115,7 +172,7 @@ public class Consulta extends Principal {
 
 				new Object[][] { { "ID", "NOME", "EMAIL", "RUA", "BAIRRO", "CIDADE", "CURSO", "LOGICA" } },
 
-				new String[] { null, null, null, null, null, null, null, null, null }
+				new String[] { null, null, null, null, null, null, null, null }
 
 		));
 
@@ -125,7 +182,6 @@ public class Consulta extends Principal {
 		tbConsultaAluno.addMouseListener(new MouseAdapter() {
 
 		});
-
 
 		btnConsultar.addActionListener(new ActionListener() {
 

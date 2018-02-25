@@ -70,11 +70,11 @@ public class AlunoDAO {
 
 			while (rs.next()) {
 				Aluno aluno = new Aluno();
-
+				aluno.setId(rs.getInt("id"));
 				aluno.setNome(rs.getString("nome"));
 				aluno.setEmail(rs.getString("email"));
 				aluno.setRua(rs.getString("rua"));
-				aluno.setbairro(rs.getString("rua"));
+				aluno.setbairro(rs.getString("bairro"));
 				aluno.setCidade(rs.getString("cidade"));
 				aluno.setCurso(rs.getString("curso"));
 				aluno.setLogica(rs.getBoolean("logica"));
@@ -111,6 +111,7 @@ public class AlunoDAO {
 
 			rs.next();
 
+			aluno.setId(rs.getInt("id"));
 			aluno.setNome(rs.getString("nome"));
 			aluno.setEmail(rs.getNString("email"));
 			aluno.setRua(rs.getNString("rua"));
@@ -129,6 +130,62 @@ public class AlunoDAO {
 		}
 
 		return aluno;
+	}
+
+	public boolean atualizar(Aluno aluno) {
+
+		String sql = "UPDATE tbAlunoDados set nome = ?, email = ?, rua = ?,	bairro = ?, cidade = ?, curso = ?, logica = ? WHERE id = ?";
+
+		PreparedStatement stmt = null;
+
+		try {
+
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, aluno.getNome());
+			stmt.setString(2, aluno.getEmail());
+			stmt.setString(3, aluno.getRua());
+			stmt.setString(4, aluno.getBairro());
+			stmt.setString(5, aluno.getCidade());
+			stmt.setString(6, aluno.getCurso());
+			stmt.setBoolean(7, aluno.isLogica());
+			stmt.setInt(8, aluno.getId());
+
+			stmt.executeUpdate();
+
+			return true;
+
+		} catch (SQLException ex) {
+
+			System.err.println("Erro: " + ex);
+			return false;
+		} finally {
+
+			ConnectionFactory.closeConnection(con, stmt);
+		}
+
+	}
+
+	public boolean delete(Aluno aluno) {
+
+		String sql = "DELETE FROM tbAlunoDados WHERE id = ?";
+		PreparedStatement stmt = null;
+
+		try {
+
+			stmt = con.prepareStatement(sql);
+			stmt.setInt(1, aluno.getId());
+			stmt.executeUpdate();
+			return true;
+
+		} catch (SQLException ex) {
+
+			System.err.println("ERRO: " + ex);
+			return false;
+
+		} finally {
+
+			ConnectionFactory.closeConnection(con, stmt);
+		}
 	}
 
 }

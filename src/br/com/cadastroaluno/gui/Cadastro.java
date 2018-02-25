@@ -8,6 +8,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -26,6 +27,8 @@ public class Cadastro extends Principal {
 	JRadioButton rbSim;
 	JRadioButton rbNao;
 	private ButtonGroup bgLogica;
+
+	protected Aluno aluno;
 
 	public void limpar() {
 
@@ -142,12 +145,33 @@ public class Cadastro extends Principal {
 
 		btnEditar.setEnabled(false);
 		miCadastra.setEnabled(false);
+		miLimpar.setEnabled(true);
+
+		btnAdiciona.setVisible(false);
+		btnConsulta.setVisible(false);
 
 		JPanel painelFoto = new JPanel();
-		painelFoto.setBounds(350, 95,120, 145);
+		painelFoto.setBounds(350, 95, 120, 145);
 		this.getContentPane().add(painelFoto);
 		painelFoto.setBackground(Color.DARK_GRAY);
-		
+
+		miLimpar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				limpar();
+
+			}
+		});
+
+		miEditar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnEditar.doClick();
+
+			}
+		});
 
 		// Evento para o botão limpar
 		btnLimpar.addActionListener(new ActionListener() {
@@ -165,52 +189,153 @@ public class Cadastro extends Principal {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (tfNome.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "O Nome não pode está vazio!");
+				if (btnConcluir.getText().equals("Concluir")) {
 
-					tfNome.requestFocus();
-				} else if (tfRua.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "O Código não pode está vazio!");
-					// Coloca o cursor na caixa de texto correspondente
-					tfRua.requestFocus();
-				} else if (cbCidade.getSelectedIndex() == 0) {
-					JOptionPane.showMessageDialog(null, "A Cidade não pode está vazio!");
+					if (tfNome.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "O Nome não pode está vazio!");
 
-					cbCidade.requestFocus();
-				} else if (lbBairro.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "O Bairro não pode está vazio!");
+						tfNome.requestFocus();
+					} else if (tfRua.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "O Código não pode está vazio!");
+						// Coloca o cursor na caixa de texto correspondente
+						tfRua.requestFocus();
+					} else if (cbCidade.getSelectedIndex() == 0) {
+						JOptionPane.showMessageDialog(null, "A Cidade não pode está vazio!");
 
-					lbBairro.requestFocus();
-				} else if (cbCurso.getSelectedIndex() == 0) {
-					JOptionPane.showMessageDialog(null, "O Curso não pode está vazio!");
+						cbCidade.requestFocus();
+					} else if (lbBairro.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "O Bairro não pode está vazio!");
 
-					cbCurso.requestFocus();
+						lbBairro.requestFocus();
+					} else if (cbCurso.getSelectedIndex() == 0) {
+						JOptionPane.showMessageDialog(null, "O Curso não pode está vazio!");
+
+						cbCurso.requestFocus();
+					} else if (!(rbSim.isSelected() || rbNao.isSelected())) {
+						JOptionPane.showMessageDialog(null, "Responde se Você sabe Logica");
+						rbSim.requestFocus();
+					} else {
+
+						Aluno aluno = new Aluno();
+						AlunoDAO dao = new AlunoDAO();
+
+						aluno.setNome(tfNome.getText());
+						aluno.setEmail(tfEmail.getText());
+						aluno.setRua(tfRua.getText());
+						aluno.setbairro(tfBairro.getText());
+						aluno.setCidade(cbCidade.getSelectedItem());
+						aluno.setCurso(cbCurso.getSelectedItem());
+						if (rbSim.isSelected()) {
+							aluno.setLogica(true);
+						} else {
+							aluno.setLogica(false);
+						}
+
+						if (dao.inserir(aluno)) {
+							JOptionPane.showMessageDialog(null, "Alunos Cadastrado com Sucesso");
+							limpar();
+						} else {
+							JOptionPane.showMessageDialog(null, "Não foi possivel salvar");
+						}
+
+					}
+
+				}
+				if (btnConcluir.getText().equals("Deletar")) {
+
+					AlunoDAO dao = new AlunoDAO();
+					Aluno aln = aluno;
+
+					if (dao.delete(aln)) {
+						JOptionPane.showMessageDialog(null, "Alunos Apagado com Sucesso");
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(null, "Não foi possivel Apagar!");
+
+					}
+
+				}
+			}
+		});
+
+		btnEditar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (tfNome.isEnabled()) {
+
+					if (tfNome.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "O Nome não pode está vazio!");
+
+						tfNome.requestFocus();
+					} else if (tfRua.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "O Código não pode está vazio!");
+						// Coloca o cursor na caixa de texto correspondente
+						tfRua.requestFocus();
+					} else if (cbCidade.getSelectedIndex() == 0) {
+						JOptionPane.showMessageDialog(null, "A Cidade não pode está vazio!");
+
+						cbCidade.requestFocus();
+					} else if (lbBairro.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "O Bairro não pode está vazio!");
+
+						lbBairro.requestFocus();
+					} else if (cbCurso.getSelectedIndex() == 0) {
+						JOptionPane.showMessageDialog(null, "O Curso não pode está vazio!");
+
+						cbCurso.requestFocus();
+					} else if (!(rbSim.isSelected() || rbNao.isSelected())) {
+						JOptionPane.showMessageDialog(null, "Responde se Você sabe Logica");
+						rbSim.requestFocus();
+					} else {
+
+						AlunoDAO dao = new AlunoDAO();
+						Aluno aln = aluno;
+
+						aln.setNome(tfNome.getText());
+						aln.setEmail(tfEmail.getText());
+						aln.setRua(tfRua.getText());
+						aln.setbairro(tfBairro.getText());
+						aln.setCidade(cbCidade.getSelectedItem());
+						aln.setCurso(cbCurso.getSelectedItem());
+						if (rbSim.isSelected()) {
+							aln.setLogica(true);
+						} else {
+							aln.setLogica(false);
+						}
+
+						if (dao.atualizar(aln)) {
+							JOptionPane.showMessageDialog(null, "Alunos Alterado com Sucesso");
+							dispose();
+						} else {
+							JOptionPane.showMessageDialog(null, "Não foi possivel Alterar");
+						}
+					}
 				} else {
 
-					Aluno aluno = new Aluno();
-					AlunoDAO dao = new AlunoDAO();
+					tfNome.setEnabled(true);
+					tfEmail.setEnabled(true);
+					tfRua.setEnabled(true);
+					tfBairro.setEnabled(true);
+					cbCidade.setEnabled(true);
+					cbCurso.setEnabled(true);
+					rbSim.setEnabled(true);
+					rbNao.setEnabled(true);
 
-					aluno.setNome(tfNome.getText());
-					aluno.setEmail(tfEmail.getText());
-					aluno.setRua(tfRua.getText());
-					aluno.setbairro(tfBairro.getText());
-					aluno.setCidade(cbCidade.getSelectedItem());
-					aluno.setCurso(cbCurso.getSelectedItem());
-					if (rbSim.isSelected()) {
-						aluno.setLogica(true);
-					} else {
-						aluno.setLogica(false);
-					}
+					btnLimpar.setEnabled(true);
+					btnConcluir.setEnabled(true);
 
-					if (dao.inserir(aluno)) {
-						JOptionPane.showMessageDialog(null, "Alunos Cadastrado com Sucesso");
-					} else {
-						JOptionPane.showMessageDialog(null, "Não foi possivel salvar");
-					}
+					btnConcluir.setText("Deletar");
+					btnEditar.setText("Salvar");
+
+					miEditar.setText("Salvar");
+					miLimpar.setEnabled(true);
 
 				}
 
 			}
+
 		});
 
 	}
